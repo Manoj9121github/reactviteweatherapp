@@ -1,37 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { fetchWeather, fetchForecast } from './utils/api';
-import WeatherCard from './components/WeatherCard';
+import { fetchWeather, fetchForecast } from './utils/Api.js';
+import WeatherCard from './components/Weathercard'
 import Forecast from './components/Forecast';
 import Searchbar from './components/Searchbar';
 
 const App = () => {
   const [city, setCity] = useState('');
-  const [units, setUnits] = useState('metric'); 
+  const [units, setUnits] = useState<'metric' | 'imperial'>('metric');
   const [weatherData, setWeatherData] = useState(null);
   const [forecastData, setForecastData] = useState(null);
   const [error, setError] = useState('');
-  console.log(weatherData)
 
   useEffect(() => {
     async function getData() {
+      if (!city) return;
       try {
-        const weatherData = await fetchWeather(city, units);
-        const forecastData = await fetchForecast(city, units);
-        setWeatherData(weatherData);
-        setForecastData(forecastData);
-      } catch (error) {
-        setError(error.message);
+        setError('');
+        const weather = await fetchWeather(city, units);
+        const forecast = await fetchForecast(city, units);
+        setWeatherData(weather);
+        setForecastData(forecast);
+      } catch (err: any) {
+        setError(err.message || 'Something went wrong');
+        setWeatherData(null);
+        setForecastData(null);
       }
     }
     getData();
   }, [city, units]);
 
   return (
-    <div className="App">
-      {error && <p>{error}</p>}
+    <div className="App container text-center">
+      <h2 className="mt-4">Weather App</h2>
       <Searchbar onSearch={setCity} />
+
+      {error && <p className="text-danger">{error}</p>}
+
       {weatherData && <WeatherCard weatherData={weatherData} />}
-      {forecastData && <Forecast forecastData={forecastData} />}
+      {forecastData && <Forecast forecastData={forecastData} units={units} />}
     </div>
   );
 };

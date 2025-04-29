@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Button, InputGroup, FormControl } from 'react-bootstrap';
 
-const Searchbar = ({ onSearch }) => {
+interface SearchbarProps {
+  onSearch: (query: string) => void;
+}
+
+const Searchbar: React.FC<SearchbarProps> = ({ onSearch }) => {
   const [search, setSearch] = useState('');
 
   const handleSearch = () => {
@@ -12,7 +16,7 @@ const Searchbar = ({ onSearch }) => {
   };
 
   return (
-    <InputGroup className="mb-4 w-50 m-auto">
+    <InputGroup className="mb-4 w-50 m-auto mt-4">
       <FormControl
         placeholder="Enter city name"
         value={search}

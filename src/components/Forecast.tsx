@@ -1,7 +1,22 @@
 import React from 'react';
 import { Card, Row, Col } from 'react-bootstrap';
 
-const Forecast = ({ forecastData, units }) => {
+interface ForecastProps {
+  forecastData: {
+    list: {
+      dt: number;
+      main: {
+        temp: number;
+      };
+      weather: {
+        main: string;
+      }[];
+    }[];
+  };
+  units: 'metric' | 'imperial';
+}
+
+const Forecast: React.FC<ForecastProps> = ({ forecastData, units }) => {
   const unitSymbol = units === 'metric' ? '°C' : '°F';
   const daily = [];
   const seen = new Set();
