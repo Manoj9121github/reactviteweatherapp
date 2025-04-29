@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { fetchWeather, fetchForecast } from './utils/Api.js';
+import  { useState, useEffect } from 'react';
+import {fetchWeather,fetchForecast} from './utils/Api.js'
 import WeatherCard from './components/Weathercard'
 import Forecast from './components/Forecast';
 import Searchbar from './components/Searchbar';
+
 
 const App = () => {
   const [city, setCity] = useState('');
@@ -28,6 +29,7 @@ const App = () => {
     }
     getData();
   }, [city, units]);
+  console.log(setUnits)
 
   return (
     <div className="App container text-center">
